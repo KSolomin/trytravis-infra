@@ -15,12 +15,12 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "files/puma.service",
+      "source": "packer/files/puma.service",
       "destination": "/home/appuser/"
     },
     {
       "type": "shell",
-      "script": "scripts/enable_puma.sh",
+      "script": "packer/scripts/enable_puma.sh",
       "execute_command": "sudo {{.Path}}"
     }
   ]

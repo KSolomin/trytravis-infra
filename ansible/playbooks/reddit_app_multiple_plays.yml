@@ -39,7 +39,7 @@
 
     - name: Enable puma
       systemd: name=puma enabled=yes
-      
+
   handlers:
   - name: Reload puma
     systemd: name=puma state=restarted

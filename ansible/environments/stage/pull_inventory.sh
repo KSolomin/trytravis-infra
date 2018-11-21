@@ -5,5 +5,5 @@ cd ../terraform/$environment
 # Pull state
 rm terraform.tfstate
 terraform state pull > terraform.tfstate
-# Load inventiry
+# Load inventory
 terraform-inventory -list terraform.tfstate

@@ -12,7 +12,7 @@
         src: templates/mongod.conf.j2
         dest: /etc/mongod.conf
         mode: 0644
-      tags: db-tag 
+      tags: db-tag
       notify: Restart mongod
 
     - name: Add unit file for Puma
@@ -27,7 +27,7 @@
       template:
         src: templates/db_config.j2
         dest: /home/appuser/db_config
-      tags: app-tag 
+      tags: app-tag
 
     - name: Enable puma
       become: true
@@ -46,7 +46,7 @@
       bundler:
         state: present
         chdir: /home/appuser/reddit
-      tags: deploy-tag 
+      tags: deploy-tag
 
   handlers:
     - name: Restart mongod

@@ -6,8 +6,41 @@ before_install:
 - curl https://raw.githubusercontent.com/express42/otus-homeworks/2018-09/run.sh |
   bash
 
+install:
+# Let's install ansible and ansible-lint:
+- sudo pip install --upgrade pip
+- sudo pip install ansible ansible-lint
+
+# Let's install terraform
+- wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip -O terraform.zip
+- sudo unzip terraform.zip -d /usr/local
+- export PATH=/usr/local/:$PATH
+
+# Let's install flint:
+- wget https://github.com/wata727/tflint/releases/download/v0.7.2/tflint_linux_amd64.zip -O tflint.zip
+- sudo unzip tflint.zip -d /usr/bin
+
 script:
+# Let's test packer templates
 - packer validate -var-file=packer/variables.json.example packer/app.json
+- packer validate -var-file=packer/variables.json.example packer/db.json
+- packer validate -var-file=packer/variables.json.example packer/immutable.json
+- packer validate -var-file=packer/variables.json.example packer/ubuntu16.json
+
+# Let's test terraform files
+- touch ~/.ssh/appuser ~/.ssh/appuser.pub
+- mv terraform/terraform.tfvars.example terraform/terraform.tfvars
+- mv terraform/stage/terraform.tfvars.example terraform/stage/terraform.tfvars
+- mv terraform/prod/terraform.tfvars.example terraform/prod/terraform.tfvars
+
+- cd terraform/stage && terraform init -backend=false && terraform validate
+- tflint
+- cd ../prod && terraform init -backend=false && terraform validate
+- tflint
+
+# Let's test ansible playbooks
+- cd ../../ansible
+- ansible-lint playbooks/*.yml --exclude=roles/jdauphant.nginx
 
 notifications:
   slack:

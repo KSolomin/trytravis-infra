@@ -4,6 +4,5 @@
   "machine_type": "g1-small",
   "image_description": "...",
   "disk_size": "10",
-  "network": "default",
-  "tags": ""
+  "network": "default"
 }
